@@ -42,7 +42,7 @@ class EDD_RCP {
 
 		define( 'EDD_RCP_STORE_API_URL', 'https://easydigitaldownloads.com' );
 		define( 'EDD_RCP_PRODUCT_NAME', 'EDD Restrict Content Pro Member Discounts' );
-		define( 'EDD_RCP_VERSION', '1.0.2' );
+		define( 'EDD_RCP_VERSION', '1.0' );
 
 		if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 			// load our custom updater
