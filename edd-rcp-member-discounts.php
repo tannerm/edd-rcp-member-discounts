@@ -102,6 +102,10 @@ class EDD_RCP {
 		// Apply discounts to the checkout
 		add_action( 'init', array( $this, 'apply_discounts' ) );
 
+		// Increase discount usage count
+		add_action( 'edd_insert_payment', array( $this, 'store_discount_id' ), 10, 2 );
+		add_action( 'edd_update_payment_status', array( $this, 'increase_use_count' ), 10, 3 );
+
 		// register our license key settings
 		add_filter( 'edd_settings_general', array( $this, 'settings' ), 1 );
 
@@ -230,11 +234,65 @@ class EDD_RCP {
 				$percent = get_post_meta( $discount, '_edd_rcp_discount_amount', true );
 				$amount  = ( $cart_amount * ( $percent / 100 ) ) * -1;
 				EDD()->fees->add_fee( $amount, get_the_title( $discount ), 'rcp_member_discount' );
+				EDD()->session->set( 'rcp_member_discount_id', $discount );
 			}
 
 		} else {
 
 			EDD()->fees->remove_fee( 'rcp_member_discount' );
+			EDD()->session->set( 'rcp_member_discount_id', null );
+
+		}
+
+	}
+
+
+	/**
+	 * Stores the discount ID in the payment meta when the payment is created
+	 *
+	 * @since 1.0
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function store_discount_id( $payment_id = 0, $payment_data = array() ) {
+
+		$discount_id = EDD()->session->get( 'rcp_member_discount_id' );
+		EDD()->session->set( 'rcp_member_discount_id', null );
+
+		if( ! empty( $discount_id ) ) {
+			add_post_meta( $payment_id, '_edd_rcp_member_discount_id', $discount_id );
+		}
+
+	}
+
+
+	/**
+	 * Increase the discount use count when a purchase is completed
+	 *
+	 * @since 1.0
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function increase_use_count( $payment_id, $new_status, $old_status ) {
+
+		if ( $old_status == 'publish' || $old_status == 'complete' )
+			return; // Make sure that payments are only completed once
+
+		// Make sure the payment completion is only processed when new status is complete
+		if ( $new_status != 'publish' && $new_status != 'complete' )
+			return;
+
+		$discount_id = get_post_meta( $payment_id, '_edd_rcp_member_discount_id', true );
+		if( ! empty( $discount_id ) ) {
+			$count = absint( get_post_meta( $discount_id, '_edd_rcp_discount_use_count', true ) );
+			if( empty( $count ) ) {
+				add_post_meta( $discount_id, '_edd_rcp_discount_use_count', '1' );
+			} else {
+				$count += 1;
+				update_post_meta( $discount_id, '_edd_rcp_discount_use_count', $count );
+			}
 		}
 
 	}

@@ -245,6 +245,7 @@ class EDD_RCP_Discounts_Admin {
 	public function columns( $columns ) {
 		$columns['subscription'] = __( 'Subscription Level', 'edd-rcp' );
 		$columns['amount']       = __( 'Discount Amount', 'edd-rcp' );
+		$columns['uses']         = __( 'Uses', 'edd-rcp' );
 		unset( $columns['date'] );
 		return $columns;
 	}
@@ -276,6 +277,10 @@ class EDD_RCP_Discounts_Admin {
 
 			case 'amount' :
 				echo absint( get_post_meta( $post_id, '_edd_rcp_discount_amount', true ) ) . '%';
+				break;
+
+			case 'uses' :
+				echo absint( get_post_meta( $post_id, '_edd_rcp_discount_use_count', true ) );
 				break;
 
 		}
