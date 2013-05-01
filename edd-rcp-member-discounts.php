@@ -309,8 +309,8 @@ class EDD_RCP {
 	public function settings( $settings ) {
 		$license_settings = array(
 			array(
-				'id' => 'edd_volume_discounts_license_header',
-				'name' => '<strong>' . __( 'Volume Discounts', 'edd-rcp' ) . '</strong>',
+				'id' => 'edd_rcp_discounts_discounts_license_header',
+				'name' => '<strong>' . __( 'RCP Member Discounts', 'edd-rcp' ) . '</strong>',
 				'desc' => '',
 				'type' => 'header',
 				'size' => 'regular'
@@ -318,10 +318,10 @@ class EDD_RCP {
 			array(
 				'id' => 'edd_rcp_license_key',
 				'name' => __( 'License Key', 'edd-rcp' ),
-				'desc' => __( 'Enter your license for Volume Discounts to receive automatic upgrades', 'edd-rcp' ),
+				'desc' => __( 'Enter your license for EDD RCP Member Discounts to receive automatic upgrades', 'edd-rcp' ),
 				'type'  => 'license_key',
 				'size'  => 'regular',
-				'options' => array( 'is_valid_license_option' => 'edd_volume_discounts_license_active' )
+				'options' => array( 'is_valid_license_option' => 'edd_rcp_discounts_license_active' )
 			)
 		);
 
@@ -346,7 +346,7 @@ class EDD_RCP {
 		if( ! isset( $_POST['edd_settings_general']['edd_rcp_license_key'] ) )
 			return;
 
-		if( get_option( 'edd_volume_discounts_license_active' ) == 'valid' )
+		if( get_option( 'edd_rcp_discounts_license_active' ) == 'valid' )
 			return;
 
 		$license = sanitize_text_field( $_POST['edd_settings_general']['edd_rcp_license_key'] );
@@ -368,7 +368,7 @@ class EDD_RCP {
 		// decode the license data
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		update_option( 'edd_volume_discounts_license_active', $license_data->license );
+		update_option( 'edd_rcp_discounts_license_active', $license_data->license );
 
 	}
 
