@@ -69,8 +69,6 @@ class EDD_RCP {
 
 			include dirname( __FILE__ ) . '/includes/admin.php';
 
-		} else {
-
 		}
 
 	}
