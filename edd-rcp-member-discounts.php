@@ -233,6 +233,7 @@ class EDD_RCP {
 
 				$percent = get_post_meta( $discount, '_edd_rcp_discount_amount', true );
 				$amount  = ( $cart_amount * ( $percent / 100 ) ) * -1;
+				$amount  = round( $amount, 2 );
 				EDD()->fees->add_fee( $amount, get_the_title( $discount ), 'rcp_member_discount' );
 				EDD()->session->set( 'rcp_member_discount_id', $discount );
 			}
