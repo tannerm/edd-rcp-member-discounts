@@ -1,0 +1,17 @@
+{
+   	"name": "pippin/edd-rcp-member-discounts",
+   	"type": "wordpress-plugin",
+	"description": "Give RCP subscribers special discounts to EDD products",
+	"keywords": [ "edd", "rcp, "pippin"],
+	"homepage": "https://bitbucket.org/pippinsplugins/edd-rcp-member-discounts/",
+	"authors": [
+	    {
+	      	"name": "Pippin Williamson",
+	      	"email": "pippin@pippinsplugins.com",
+	      	"homepage": "https://easydigitaldownloads.com/"
+	    }
+	],
+   	"require": {
+     	"composer/installers": "~1.0.6"
+   	}
+}
