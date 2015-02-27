@@ -5,8 +5,17 @@ Plugin URI: http://easydigitaldownloads.com/restrict-content-pro
 Description: Give RCP subscribers special discounts to EDD products
 Author: Pippin Williamson
 Author URI: http://pippinsplugins.com
-Version: 1.0.1
+Version: 1.1
 */
+
+define( 'EDD_RCP_STORE_API_URL', 'https://easydigitaldownloads.com' );
+define( 'EDD_RCP_PRODUCT_NAME', 'Restrict Content Pro Member Discounts' );
+define( 'EDD_RCP_VERSION', '1.1' );
+
+
+if( class_exists( 'EDD_License' ) ) {
+	$edd_rcp_license = new EDD_License( __FILE__, EDD_RCP_PRODUCT_NAME, EDD_RCP_VERSION, 'Pippin Williamson', 'edd_rcp_license_key' );
+}
 
 class EDD_RCP {
 
@@ -16,7 +25,7 @@ class EDD_RCP {
 	/**
 	 * Get active object instance
 	 *
-	 * @since 1.0.1
+	 * @since 1.0
 	 *
 	 * @access public
 	 * @static
@@ -33,16 +42,12 @@ class EDD_RCP {
 	/**
 	 * Class constructor.  Includes constants, includes and init method.
 	 *
-	 * @since 1.0.1
+	 * @since 1.0
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function __construct() {
-
-		define( 'EDD_RCP_STORE_API_URL', 'https://easydigitaldownloads.com' );
-		define( 'EDD_RCP_PRODUCT_NAME', 'Restrict Content Pro Member Discounts' );
-		define( 'EDD_RCP_VERSION', '1.0.1' );
 
 		$this->includes();
 		$this->init();
@@ -95,13 +100,13 @@ class EDD_RCP {
 		add_action( 'init', array( $this, 'register_post_type' ), 100 );
 
 		// Apply discounts to the checkout
-		add_action( 'init', array( $this, 'apply_discounts' ) );
+		add_action( 'edd_post_add_to_cart', array( $this, 'apply_discounts' ), 10, 2 );
+		add_action( 'edd_post_remove_from_cart', array( $this, 'apply_discounts' ), 10, 2 );
 
 		// Increase discount usage count
 		add_action( 'edd_insert_payment', array( $this, 'store_discount_id' ), 10, 2 );
 		add_action( 'edd_update_payment_status', array( $this, 'increase_use_count' ), 10, 3 );
 
-		$license = new EDD_License( __FILE__, 'Restrict Content Pro Member Discounts', EDD_RCP_VERSION, 'Pippin Williamson', 'edd_rcp_license_key' );
 
 	}
 
@@ -178,7 +183,7 @@ class EDD_RCP {
 	 * @access public
 	 * @return void
 	 */
-	public function apply_discounts() {
+	public function apply_discounts( $download_id, $options ) {
 
 		if( ! function_exists( 'rcp_is_active' ) )
 			return;
@@ -210,12 +215,7 @@ class EDD_RCP {
 
 				$percent = get_post_meta( $discount, '_edd_rcp_discount_amount', true );
 				$amount  = ( $cart_amount * ( $percent / 100 ) ) * -1;
-				$amount  = round( $amount, 2 );
-				EDD()->fees->add_fee( array(
-					'amount' => $amount,
-					'label'  => get_the_title( $discount ),
-					'id'     => 'rcp_member_discount'
-				) );
+				EDD()->fees->add_fee( array( 'amount' => $amount, 'label' => get_the_title( $discount ), 'id' => 'rcp_member_discount' ) );
 				EDD()->session->set( 'rcp_member_discount_id', $discount );
 			}
 
