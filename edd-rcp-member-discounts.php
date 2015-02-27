@@ -44,11 +44,6 @@ class EDD_RCP {
 		define( 'EDD_RCP_PRODUCT_NAME', 'Restrict Content Pro Member Discounts' );
 		define( 'EDD_RCP_VERSION', '1.0' );
 
-		if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			// load our custom updater
-			include( dirname( __FILE__ ) . '/EDD_SL_Plugin_Updater.php' );
-		}
-
 		$this->includes();
 		$this->init();
 
