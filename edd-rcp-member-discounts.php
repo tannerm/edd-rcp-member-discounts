@@ -5,7 +5,7 @@ Plugin URI: http://easydigitaldownloads.com/restrict-content-pro
 Description: Give RCP subscribers special discounts to EDD products
 Author: Pippin Williamson
 Author URI: http://pippinsplugins.com
-Version: 1.0
+Version: 1.0.1
 */
 
 class EDD_RCP {
@@ -16,7 +16,7 @@ class EDD_RCP {
 	/**
 	 * Get active object instance
 	 *
-	 * @since 1.0
+	 * @since 1.0.1
 	 *
 	 * @access public
 	 * @static
@@ -33,7 +33,7 @@ class EDD_RCP {
 	/**
 	 * Class constructor.  Includes constants, includes and init method.
 	 *
-	 * @since 1.0
+	 * @since 1.0.1
 	 *
 	 * @access public
 	 * @return void
@@ -42,7 +42,7 @@ class EDD_RCP {
 
 		define( 'EDD_RCP_STORE_API_URL', 'https://easydigitaldownloads.com' );
 		define( 'EDD_RCP_PRODUCT_NAME', 'Restrict Content Pro Member Discounts' );
-		define( 'EDD_RCP_VERSION', '1.0' );
+		define( 'EDD_RCP_VERSION', '1.0.1' );
 
 		$this->includes();
 		$this->init();
