@@ -194,7 +194,7 @@ class EDD_RCP {
 		// Get member details
 		$user_id   = get_current_user_id();
 		$sub_id    = rcp_get_subscription_id( $user_id );
-		$is_active = ! rcp_is_expired( $user_id ) && rcp_get_status( $user_id ) == 'active' && ! empty( $sub_id );
+		$is_active = rcp_is_active( $user_id ) && ! empty( $sub_id );
 
 		$discounts = get_posts( array(
 			'post_type'      => 'edd_rcp_discount',
