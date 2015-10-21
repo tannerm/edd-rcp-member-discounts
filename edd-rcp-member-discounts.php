@@ -33,8 +33,9 @@ class EDD_RCP {
 	 */
 	public static function get_instance() {
 
-		if ( ! self::$instance )
-			self::$instance = new EDD_Volume_Discounts();
+		if ( ! self::$instance ) {
+			self::$instance = new EDD_RCP();
+		}
 
 		return self::$instance;
 	}
@@ -44,10 +45,10 @@ class EDD_RCP {
 	 *
 	 * @since 1.0
 	 *
-	 * @access public
+	 * @access protected
 	 * @return void
 	 */
-	public function __construct() {
+	protected function __construct() {
 
 		$this->includes();
 		$this->init();
@@ -292,6 +293,6 @@ class EDD_RCP {
  */
 
 function edd_rcp_load() {
-	$discounts = new EDD_RCP();
+	EDD_RCP::get_instance();
 }
 add_action( 'plugins_loaded', 'edd_rcp_load' );
